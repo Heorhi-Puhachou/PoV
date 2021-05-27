@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Parser {
+    public static int FIRST_COLUMN_WIDTH = 2000;
+    public static int SECOND_COLUMN_WIDTH = 13000;
+    public static int COLOR_CELL_WIDTH = 525;
+    public static int FIRST_COLUMN_WITH_COLOR = 2;
 
     public static void main(String... args) throws IOException {
 
@@ -22,24 +26,24 @@ public class Parser {
 
         for (Voiting voiting : Storage.voitings) {
             addVoitingRow(sheet, voiting, rowNumber++);
-        } ;
+        }
 
-        FileOutputStream outputStream = new FileOutputStream("/home/heorhi/excel2/voiting.xlsx");
+        FileOutputStream outputStream = new FileOutputStream("/home/heorhi/excel2/voitings.xlsx");
         workbook.write(outputStream);
         workbook.close();
     }
 
     public static void createHeader(XSSFSheet sheet, XSSFWorkbook workbook) {
         Row headerRow = sheet.createRow(0);
-        sheet.setColumnWidth(0, 2000);
-        sheet.setColumnWidth(1, 13000);
+        sheet.setColumnWidth(0, FIRST_COLUMN_WIDTH);
+        sheet.setColumnWidth(1, SECOND_COLUMN_WIDTH);
         ArrayList<String> delegates = Storage.getDelegates();
         XSSFCellStyle myStyle = workbook.createCellStyle();
         myStyle.setRotation((short) 90);
 
         for (int i = 0; i < delegates.size(); i++) {
-            Cell headerCell = headerRow.createCell(i + 2);
-            sheet.setColumnWidth(i + 2, 525);
+            Cell headerCell = headerRow.createCell(i + FIRST_COLUMN_WITH_COLOR);
+            sheet.setColumnWidth(i + FIRST_COLUMN_WITH_COLOR, COLOR_CELL_WIDTH);
 
             headerCell.setCellValue((i + 1) + ". " + delegates.get(i));
             headerCell.setCellStyle(myStyle);
@@ -65,7 +69,7 @@ public class Parser {
         ArrayList<String> delegates = Storage.getDelegates();
 
         for (int i = 0; i < delegates.size(); i++) {
-            Cell colorCell = row.createCell(i + 2);
+            Cell colorCell = row.createCell(i + FIRST_COLUMN_WITH_COLOR);
             CellStyle style = nameColor.get(delegates.get(i));
             colorCell.setCellStyle(style);
         }
@@ -88,6 +92,7 @@ public class Parser {
         String[] names = variant
                 .replace("ГОЛОСА ЗА:", "")
                 .replace("ГОЛОСА ПРОТИВ:", "")
+                .replace("ГОЛОСА ПРОТИВ ВСЕХ:", "")
                 .replace("ВОЗДЕРЖАЛИСЬ:", "")
                 .trim()
                 .split(",");
