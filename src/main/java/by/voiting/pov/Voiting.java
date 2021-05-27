@@ -1,3 +1,5 @@
+package by.voiting.pov;
+
 public class Voiting {
     private String date;
     private String name;

@@ -1,3 +1,5 @@
+package by.voiting.pov;
+
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,31 +15,18 @@ public class Parser {
     public static void main(String... args) throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Reviews");
+        XSSFSheet sheet = workbook.createSheet("Voitings");
 
+        int rowNumber = 1;
         createHeader(sheet, workbook);
 
-        addVoitingRow(sheet, Storage.voiting20210525, 1);
-        addVoitingRow(sheet, Storage.voiting20210515, 2);
-        addVoitingRow(sheet, Storage.voiting20210506, 3);
-        addVoitingRow(sheet, Storage.voiting20210503, 4);
-        addVoitingRow(sheet, Storage.voiting20210503_2, 5);
-        addVoitingRow(sheet, Storage.voiting20210503_3, 6);
-        addVoitingRow(sheet, Storage.voiting20210427, 7);
-        addVoitingRow(sheet, Storage.voiting20210424, 8);
-        addVoitingRow(sheet, Storage.voiting20210423, 9);
-        addVoitingRow(sheet, Storage.voiting20210423_2, 10);
-        addVoitingRow(sheet, Storage.voiting20210420, 11);
-        addVoitingRow(sheet, Storage.voiting20210420_2, 11);
-        addVoitingRow(sheet, Storage.voiting20210404, 12);
-        addVoitingRow(sheet, Storage.voiting20210404_2, 13);
-        addVoitingRow(sheet, Storage.voiting20210404_3, 14);
+        for (Voiting voiting : Storage.voitings) {
+            addVoitingRow(sheet, voiting, rowNumber++);
+        } ;
 
         FileOutputStream outputStream = new FileOutputStream("/home/heorhi/excel2/voiting.xlsx");
         workbook.write(outputStream);
         workbook.close();
-
-
     }
 
     public static void createHeader(XSSFSheet sheet, XSSFWorkbook workbook) {
