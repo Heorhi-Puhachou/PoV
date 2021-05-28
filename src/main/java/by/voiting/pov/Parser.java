@@ -79,11 +79,11 @@ public class Parser {
 
     public static void handleVariant(XSSFSheet sheet, String variant, HashMap<String, CellStyle> nameColor) {
         CellStyle style;
-        if (variant.startsWith("ГОЛОСА ЗА:")) {
+        if (variant.startsWith("ГОЛОСА ЗА:") || variant.startsWith("ЗА:")) {
             style = getGreenStyle(sheet);
-        } else if (variant.startsWith("ГОЛОСА ПРОТИВ:") || variant.startsWith("ГОЛОСА ПРОТИВ ВСЕХ:")) {
+        } else if (variant.startsWith("ГОЛОСА ПРОТИВ:") || variant.startsWith("ГОЛОСА ПРОТИВ ВСЕХ:") || variant.startsWith("ПРОТИВ:")) {
             style = getBlueStyle(sheet);
-        } else if (variant.startsWith("ВОЗДЕРЖАЛИСЬ:")) {
+        } else if (variant.startsWith("ВОЗДЕРЖАЛИСЬ:") || variant.startsWith("ВОЗДЕРЖАЛОСЬ:")) {
             style = getYellowStyle(sheet);
         } else {
             style = getEmptyStyle(sheet);
@@ -91,9 +91,12 @@ public class Parser {
 
         String[] names = variant
                 .replace("ГОЛОСА ЗА:", "")
+                .replace("ЗА:", "")
                 .replace("ГОЛОСА ПРОТИВ:", "")
+                .replace("ПРОТИВ:", "")
                 .replace("ГОЛОСА ПРОТИВ ВСЕХ:", "")
                 .replace("ВОЗДЕРЖАЛИСЬ:", "")
+                .replace("ВОЗДЕРЖАЛОСЬ:", "")
                 .trim()
                 .split(",");
         for (String name : names) {
